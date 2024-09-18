@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "interview-project"
+version = "0.1.0"
+authors = ["David Jiménez Rodríguez <david.jr1792@gmail.com>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = {extras = ["standard"], version = "^0.115.0"}
+pydantic = "^2.9.2"
+uvicorn = "^0.30.6"
+httpx = "^0.27.2"
+strawberry-graphql = {extras = ["fastapi"], version = "^0.241.0"}
+pynamodb = "^6.0.1"
+pyjwt = "^2.9.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+bcrypt = "^4.2.0"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
