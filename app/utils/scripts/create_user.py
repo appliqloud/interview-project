@@ -2,6 +2,7 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 import bcrypt
+import uuid
 
 from ...src.apps.users.models import User as UserModel
 
@@ -15,6 +16,7 @@ except UserModel.DoesNotExist:
 
 first_name = input('Enter the user first name: ')
 last_name = input('Enter the user last name: ')
+data_key = input('Enter the user data key: ')
 role = input('Enter the user role: ')
 
 assert role in ['ADMIN', 'USER'], 'Invalid role'
@@ -26,6 +28,7 @@ model = UserModel(SK = f'USER#{id}',
                   id = id,
                   first_name = first_name,
                   last_name = last_name,
+                  data_key = data_key,
                   role = role,
                   password_hash = password_hash)
 

@@ -21,6 +21,7 @@ def get_graphql_context(authorization: Annotated[str, Header()]) -> GraphQLConte
                                     os.getenv('JWT_SECRET_KEY'),
                                     algorithms = [os.getenv('JWT_ALGORITHM')])
                 return GraphQLContext(username = claims['sub'],
+                                      data_key = claims['dataKey'],
                                       role = claims['role'])
             except jwt.ExpiredSignatureError:
                 raise InvalidTokenException({'error': 'Token has expired'})
@@ -41,9 +42,10 @@ def get_rest_context(authorization: Annotated[str, Header()]) -> RESTContext:
     if authorization_type == 'Bearer':
         try:
             claims = jwt.decode(authorization,
-                                os.getenv('JWT_SECRET'),
+                                os.getenv('JWT_SECRET_KEY'),
                                 algorithms = [os.getenv('JWT_ALGORITHM')])
             return RESTContext(username = claims['sub'],
+                               data_key = claims['dataKey'],
                                role = claims['role'])
         except jwt.ExpiredSignatureError:
             raise InvalidTokenException({'error': 'Token has expired'})

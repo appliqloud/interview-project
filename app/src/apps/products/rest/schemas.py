@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional
 
@@ -27,7 +27,8 @@ class CreateProductInput(BaseModel):
     translations: list[ProductTranslation]
 
     def to_model(self, context: RESTContext) -> ProductModel:
-        return ProductModel(SK = f'PRODUCT#{self.id}',
+        return ProductModel(PK = f'DATA_KEY#{context.data_key}',
+                            SK = f'PRODUCT#{self.id}',
                             id = self.id,
                             price = self.price,
                             translations = [translation.to_model() for translation in self.translations],
@@ -47,12 +48,14 @@ class UpdateProductInput(BaseModel):
 
 class Product(BaseModel):
     id: str
+    is_active: bool = Field(..., serialization_alias = 'isActive')
     price: float
     translations: list[ProductTranslation]
 
     @classmethod
     def from_model(cls, model: ProductModel) -> 'Product':
         return cls(id = model.id,
+                   is_active = model.is_active,
                    price = model.price,
                    translations = [ProductTranslation.from_model(translation) for translation in model.translations])
     

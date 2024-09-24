@@ -3,11 +3,15 @@ from strawberry.permission import BasePermission
 from strawberry.types import Info
 from typing import Any
 
+from ..exceptions import UnauthorizedException
+
 class GraphQLContext(BaseContext):
     def __init__(self, *,
                  username: str,
+                 data_key: str,
                  role: str) -> None:
         self.username = username
+        self.data_key = data_key
         self.role = role
 
 permission_map = {'ADMIN': {'PRODUCTS': ['CREATE', 'READ', 'UPDATE', 'DEACTIVATE', 'ACTIVATE', 'DELETE'],
@@ -16,6 +20,7 @@ permission_map = {'ADMIN': {'PRODUCTS': ['CREATE', 'READ', 'UPDATE', 'DEACTIVATE
                            'ORDERS': ['CREATE', 'READ', 'UPDATE', 'DELETE', 'CANCEL']}}
 
 class Authorization(BasePermission):
+    error_class = UnauthorizedException
     message = 'User is not authorized to perform this action'
 
     def __init__(self, service: str, action: str) -> None:

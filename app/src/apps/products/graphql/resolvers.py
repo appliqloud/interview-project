@@ -10,23 +10,23 @@ class ProductResolvers:
         self.context = context
 
     def count_products(self) -> int:
-        return ProductModel.type_index.count('PRODUCT',
-                                             filter_condition = ProductModel.created_by.startswith(self.context.username))
+        return ProductModel.count(f'DATA_KEY#{self.context.data_key}',
+                                             filter_condition = ProductModel._TYPE == 'PRODUCT')
     
     def find_product_by_id(self, id: str) -> Product | Error:
-        if not (product := ProductModel.get(id)) or not product.created_by.startswith(self.context.username):
+        try:
+            print(f'DATA_KEY#{self.context.data_key}', f'PRODUCT#{id}')
+            return Product.from_model(ProductModel.get(f'DATA_KEY#{self.context.data_key}', f'PRODUCT#{id}'))
+        except ProductModel.DoesNotExist:
             return Error.from_exception(ProductNotFoundException({'productId': id}))
-        return product
     
     def find_products(self) -> list[Product]:
-        return [Product.from_model(product) for product in ProductModel.type_index.query('PRODUCT',
-                                                                                         filter_condition = ProductModel.created_by.startswith(self.context.username))]
+        return [Product.from_model(product) for product in ProductModel.query(f'DATA_KEY#{self.context.data_key}',
+                                                                              filter_condition = ProductModel._TYPE == 'PRODUCT')]
     
     def create_product(self, product: CreateProductInput) -> Product | Error:
         try:
-            existing = ProductModel.get('PRODUCT', f'PRODUCT#{product.id}')
-            if existing.created_by != self.context.username:
-                raise ProductModel.DoesNotExist
+            ProductModel.get(f'DATA_KEY#{self.context.data_key}', f'PRODUCT#{product.id}')
             return Error.from_exception(ProductAlreadyExistsException({'productId': product.id}))
         except ProductModel.DoesNotExist:
             model = product.to_model(self.context)
@@ -35,10 +35,7 @@ class ProductResolvers:
 
     def update_product(self, id: str, product: UpdateProductInput) -> Product | Error:
         try:
-            model = ProductModel.get('PRODUCT', f'PRODUCT#{id}')
-            if model.created_by != self.context.username:
-                return Error.from_exception(ProductNotFoundException({'productId': id}))
-            
+            model = ProductModel.get(f'DATA_KEY#{self.context.data_key}', f'PRODUCT#{id}') 
             model  = product.to_model(self.context, model)
             model.save()
             return Product.from_model(model)
@@ -47,10 +44,7 @@ class ProductResolvers:
 
     def deactivate_product(self, id: str) -> Product | Error:
         try:
-            model = ProductModel.get('PRODUCT', f'PRODUCT#{id}')
-            if model.created_by != self.context.username:
-                return Error.from_exception(ProductNotFoundException({'productId': id}))
-            
+            model = ProductModel.get(f'DATA_KEY#{self.context.data_key}', f'PRODUCT#{id}') 
             model.update([ProductModel.is_active.set(False)])
             return Product.from_model(model)
         except ProductModel.DoesNotExist:
@@ -58,10 +52,7 @@ class ProductResolvers:
 
     def activate_product(self, id: str) -> Product | Error:
         try:
-            model = ProductModel.get('PRODUCT', f'PRODUCT#{id}')
-            if model.created_by != self.context.username:
-                return Error.from_exception(ProductNotFoundException({'productId': id}))
-            
+            model = ProductModel.get(f'DATA_KEY#{self.context.data_key}', f'PRODUCT#{id}') 
             model.update([ProductModel.is_active.set(True)])
             return Product.from_model(model)
         except ProductModel.DoesNotExist:
@@ -69,10 +60,7 @@ class ProductResolvers:
 
     def delete_product(self, id: str) -> Product | Error:
         try:
-            model = ProductModel.get('PRODUCT', f'PRODUCT#{id}')
-            if model.created_by != self.context.username:
-                return Error.from_exception(ProductNotFoundException({'productId': id}))
-            
+            model = ProductModel.get(f'DATA_KEY#{self.context.data_key}', f'PRODUCT#{id}') 
             model.delete()
             return Product.from_model(model)
         except ProductModel.DoesNotExist:

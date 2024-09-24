@@ -10,12 +10,14 @@ fastapi = {extras = ["standard"], version = "^0.115.0"}
 pydantic = "^2.9.2"
 uvicorn = "^0.30.6"
 httpx = "^0.27.2"
-strawberry-graphql = {extras = ["fastapi"], version = "^0.241.0"}
+strawberry-graphql = {extras = ["cli"], version = "^0.242.0"}
 pynamodb = "^6.0.1"
 pyjwt = "^2.9.0"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 bcrypt = "^4.2.0"
 python-dotenv = "^1.0.1"
+pytest = "^8.3.3"
+boto3 = "^1.35.25"
 
 
 [build-system]

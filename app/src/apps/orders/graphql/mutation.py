@@ -14,12 +14,12 @@ class Mutation:
                      order: OrderInput) -> Order | Error:
         return res(info.context).create_order(order)
     
-    @strawberry.mutation(extensions = [PermissionExtension([Authorization('ORDERS', 'DELETE')])])
-    def cancel_order(self, info: Info, 
-                     id: str) -> Order | Error:
-        return res(info.context).cancel_order(id)
-    
     @strawberry.mutation(extensions = [PermissionExtension([Authorization('ORDERS', 'MARK_AS_RECEIVED')])])
     def mark_order_as_received(self, info: Info, 
                                id: str) -> Order | Error:
         return res(info.context).mark_order_as_received(id)
+    
+    @strawberry.mutation(extensions = [PermissionExtension([Authorization('ORDERS', 'CANCEL')])])
+    def cancel_order(self, info: Info, 
+                     id: str) -> Order | Error:
+        return res(info.context).cancel_order(id)

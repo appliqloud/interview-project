@@ -30,7 +30,7 @@ class UserService:
         if not bcrypt.checkpw(form_data.password.encode(), user.password_hash):
             raise InvalidCredentialsException({'userId': form_data.username,
                                                'password': form_data.password})
-        return Token(access_token = cls.__create_access_token({'sub': user.id, 'role': user.role}))
+        return Token(access_token = cls.__create_access_token({'sub': user.id, 'role': user.role, 'dataKey': user.data_key}))
         
     @classmethod
     def __create_access_token(cls, data: dict) -> str:

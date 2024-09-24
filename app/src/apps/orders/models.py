@@ -19,7 +19,7 @@ class Order(Model):
 
     PK = UnicodeAttribute(hash_key = True)
     SK = UnicodeAttribute(range_key = True)
-    _TYPE = UnicodeAttribute()
+    _TYPE = UnicodeAttribute(default = 'ORDER')
     type_index = TypeIndex()
     id = UnicodeAttribute()
 

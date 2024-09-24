@@ -21,7 +21,8 @@ class CreateProductInput:
     translations: list[ProductTranslationInput]
 
     def to_model(self, context: GraphQLContext) -> ProductModel:
-        return ProductModel(SK = f'PRODUCT#{self.id}',
+        return ProductModel(PK = f'DATA_KEY#{context.data_key}',
+                            SK = f'PRODUCT#{self.id}',
                             id = self.id,
                             price = self.price,
                             translations = [t.to_model() for t in self.translations],
@@ -69,8 +70,9 @@ class Product:
                    translations = [ProductTranslation.from_model(t) for t in model.translations])
     
     @classmethod
-    def from_id(cls, id: str) -> Optional['Product']:
+    def from_id(cls, context: GraphQLContext, 
+                id: str) -> Optional['Product']:
         try:
-            return cls.from_model(ProductModel.get('PRODUCT', f'PRODUCT#{id}'))
+            return cls.from_model(ProductModel.get(f'DATA_KEY#{context.data_key}', f'PRODUCT#{id}'))
         except ProductModel.DoesNotExist:
             return None

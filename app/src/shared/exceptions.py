@@ -16,6 +16,12 @@ class InvalidTokenException(CustomException):
         message = 'Invalid token'
         super().__init__(status_code, message, context)
 
+class UnauthorizedException(CustomException):
+    def __init__(self, context: Optional[dict] = None) -> None:
+        status_code = 403
+        message = 'User is not authorized to perform this action'
+        super().__init__(status_code, message, context)
+
 class InvalidCredentialsException(CustomException):
     def __init__(self, context: Optional[dict] = None) -> None:
         status_code = 401

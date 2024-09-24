@@ -21,7 +21,7 @@ class Product(Model):
         table_name = os.environ.get('AWS_DDB_TABLE_NAME')
         region = os.environ.get('AWS_REGION')
 
-    PK = UnicodeAttribute(hash_key = True, default = 'PRODUCT')
+    PK = UnicodeAttribute(hash_key = True)
     SK = UnicodeAttribute(range_key = True)
     _TYPE = UnicodeAttribute(default = 'PRODUCT')
     type_index = TypeIndex()
@@ -32,6 +32,6 @@ class Product(Model):
     created_by = UnicodeAttribute(attr_name = 'createdBy', default = 'SYSTEM')
     updated_by = UnicodeAttribute(attr_name = 'updatedBy', default = 'SYSTEM', null = True)
 
-    is_active = BooleanAttribute(default = True)
+    is_active = BooleanAttribute(default = True, attr_name = 'isActive')
     price = NumberAttribute()
     translations = ListAttribute(of = ProductTranslation)

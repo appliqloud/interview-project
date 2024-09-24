@@ -20,5 +20,6 @@ class User(Model):
 
     first_name = UnicodeAttribute(attr_name = 'firstName')
     last_name = UnicodeAttribute(attr_name = 'lastName')
+    data_key = UnicodeAttribute(attr_name = 'dataKey')
     role = UnicodeAttribute()
     password_hash = BinaryAttribute(attr_name = 'passwordHash', legacy_encoding = False)
