@@ -4,6 +4,6 @@ Los candidatos a formar parte del equipo de desarrollo de AppliQloud deberán el
 
 ## Prueba de frontend
 
-En esta prueba se evaluarán los conocimientos del candidato para el desarrollo frontend, desde el diseño visual del aplicativo, hasta el correcto funcionamiento de la lógica de negocio. Para los detalles de integración, acceder al [siguiente link](./specs/frontend.md)
+En esta prueba se evaluarán los conocimientos del candidato para el desarrollo frontend, desde el diseño visual del aplicativo, hasta el correcto funcionamiento de la lógica de negocio. Para los detalles de integración, acceder al [siguiente link](./specs/frontend/guide.md)
 
 ---
