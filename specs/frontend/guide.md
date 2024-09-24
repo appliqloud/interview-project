@@ -12,7 +12,7 @@
   - Para las consultas del proyecto se puede utilizar REST o GraphQL (GraphQL es lo que se utiliza en los desarrollos de AppliQloud)
     - Las consultas se harán a la url https://interview.appliqloud.com
     - La documentación de la API REST se puede ver en la URL https://interview.appliqloud.com/docs
-    - La documentación de GraphQL se puede ver en la URL https://interview.appliqloud.com/graphql a través de la introspección de GraphQL en Postman o algún programa similar
+    - El schema de GraphQL se puede ver en la URL https://interview.appliqloud.com/graphql a través de la introspección de GraphQL en Postman o algún programa similar, o en el [siguiente archivo](./schema.graphql)
 
 #### Login
   - Hay dos tipos de roles de usuarios, `ADMIN` y `USER`.
