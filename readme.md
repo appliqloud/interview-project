@@ -1,1 +1,1 @@
-App realizada cumpliendo los requisitos de la prueba técnica para la empresa ApplyQloud.
+App realizada cumpliendo los requisitos de la prueba técnica para la empresa AppliQloud.
