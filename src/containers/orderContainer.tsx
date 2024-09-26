@@ -1,15 +1,27 @@
-import { Button } from '@mui/material'
+// React
 import React, { useEffect, useState } from 'react'
+
+// Hooks
 import { useDialogs } from '@toolpad/core/useDialogs';
+
+// Material UI
+import { Button } from '@mui/material';
+
+// Components
 import DialogAddOrder from '@/components/dialogAddOrder';
-import { cancelOrderService, changeStatusOrderService, createOrderService, getOrdersService } from '@/services/order.service';
-import { v4 as uuidv4 } from 'uuid';
 import TableOrder from '@/components/tableOrder';
+
+// Services
+import { cancelOrderService, changeStatusOrderService, createOrderService, getOrdersService } from '@/services/order.service';
+
+// Interfaces
 import { EUserRole } from '@/app/interfaces/user';
 
 function orderContainer({ role }: { role: EUserRole }) {
-    const dialogs = useDialogs();
+
     const [orders, setOrders] = useState([]);
+    const dialogs = useDialogs();
+
 
     useEffect(() => {
         getOrders()
@@ -24,7 +36,7 @@ function orderContainer({ role }: { role: EUserRole }) {
         const result = await dialogs.open(DialogAddOrder, undefined, {
             onClose: async (result: any) => {
                 if (result) {
-                    const response = await createOrderService(result)
+                    await createOrderService(result)
                     getOrders()
                 }
             },
@@ -32,12 +44,12 @@ function orderContainer({ role }: { role: EUserRole }) {
     }
 
     const handleCancelOrder = async (id: string) => {
-        const response = await cancelOrderService(id)
+        await cancelOrderService(id)
         getOrders()
     }
 
     const changeStatusOrder = async (id: string) => {
-        const response = await changeStatusOrderService(id)
+        await changeStatusOrderService(id)
         getOrders()
     }
 
@@ -46,7 +58,7 @@ function orderContainer({ role }: { role: EUserRole }) {
             <div className='flex justify-between'>
                 <h3>Lista de Ordenes</h3>
                 <Button disabled={role !== EUserRole.USER} variant="contained" color="primary" onClick={openModalCreateOrder}>
-                    Agregar Orden
+                    Crear Orden
                 </Button>
 
             </div>

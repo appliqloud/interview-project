@@ -1,19 +1,24 @@
+// React
 'use client'
 import * as React from 'react';
-import { DialogsProvider, useDialogs, DialogProps } from '@toolpad/core/useDialogs';
+import { ChangeEvent, useState } from 'react';
+
+// Material UI
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { ChangeEvent, useState } from 'react';
 import { TextField } from '@mui/material';
 
+// Models
+import { IProductAddModel } from '@/app/model/product.add.model';
+
 export default function DialogEditProduct({ payload, open, onClose }: any) {
-    debugger
-    const [formValues, setFormValues] = useState({
+
+    const [formValues, setFormValues] = useState<IProductAddModel>({
         productName: payload?.translations[0]?.description || '',
-        price: payload?.price || 0,
+        price: payload?.price || '',
     });
 
     const [formErrors, setFormErrors] = useState({
@@ -32,8 +37,37 @@ export default function DialogEditProduct({ payload, open, onClose }: any) {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onClose(formValues as any);
+        if (isEqual()) {
+            onClose();
+            return
+        }
+        if (validate()) {
+            onClose(formValues as IProductAddModel);
+        }
     }
+
+    const validate = () => {
+        let formErrors: { productName: string | null, price: string | null } = {
+            productName: null,
+            price: null,    
+        };
+
+        if (!formValues.productName) {
+            formErrors.productName = 'El nombre del producto es requerido';
+        }
+
+        if (!formValues.price) {
+            formErrors.price = 'El precio es requerido';
+        }
+
+        setFormErrors(formErrors as any);
+        return Object.values(formErrors).every(error => error === null);
+    };
+
+    const isEqual = () => {
+        return formValues.productName === payload?.translations[0]?.description && formValues.price === payload?.price;
+    }
+
     return (
         <Dialog fullWidth open={open} onClose={() => onClose()}>
             <form onSubmit={handleSubmit} noValidate className='w-full'>

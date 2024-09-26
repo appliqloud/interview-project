@@ -1,20 +1,30 @@
+// React
 'use client'
 import React, { useEffect, useState } from 'react'
+
+// Components
 import TableProducts from '../components/tableProducts'
-import { createProductService, deleteProductService, productsService, updateProductService } from '../services/product.service'
-import { Button } from '@mui/material'
-import { Modal } from '@mui/material';
-import { useDialogs } from '@toolpad/core/useDialogs';
 import DialogAddProduct from '../components/dialogAddProduct'
 import DialogEditProduct from '../components/dialogEditProduct'
-import { v4 as uuidv4 } from 'uuid';
+// Services
+import { createProductService, deleteProductService, productsService, updateProductService } from '../services/product.service'
 import { activateProductService, deactivateProductService } from '../services/product.service';
-import { EUserRole } from '@/app/interfaces/user';
+import { v4 as uuidv4 } from 'uuid';
 
-export default function productsContainer({ role }: { role: EUserRole } ) {
-  const dialogs = useDialogs();
+// Material UI
+import { Button } from '@mui/material'
+import { useDialogs } from '@toolpad/core/useDialogs';
+
+// Interfaces
+import { EUserRole } from '@/app/interfaces/user';
+import { IProductAddModel } from '@/app/model/product.add.model'
+import { IProduct } from '@/app/interfaces/product'
+
+export default function productsContainer({ role }: { role: EUserRole }) {
 
   const [products, setProducts] = useState<any>([])
+  const dialogs = useDialogs();
+
 
   useEffect(() => {
     getProducts()
@@ -25,20 +35,51 @@ export default function productsContainer({ role }: { role: EUserRole } ) {
     setProducts(response)
   }
 
-  const handleCreateProduct = async (data: any) => {
-    await createProductService(data).then((res: any) => {
-      console.log(res)
+  const handleCreateProduct = async (data: IProduct) => {
+    await createProductService(data).then((res: IProduct) => {
       getProducts()
     })
   }
 
-  const openModalCreateProduct = async () => {
-    const result = await dialogs.open(DialogAddProduct, undefined, {
-      onClose: async (result: any) => {
-        console.log(result)
+  const handleUpdateProduct = async (data: IProduct) => {
+    await updateProductService(data.id, data).then((res: IProduct) => {
+      getProducts()
+    })
+  }
+
+  const handleDeleteProduct = async (id: string) => {
+    await deleteProductService(id).then((res: IProduct) => {
+      getProducts()
+    })
+  }
+
+  const openModalEditProduct = async (id: string) => {
+    const product = products.find((product: IProduct) => product.id === id)
+    await dialogs.open(DialogEditProduct as any, product, {
+      onClose: async (result: IProductAddModel) => {
         if (result) {
-          const data = {
+          const data: IProduct = {
+            id: product.id,
+            price: result.price,
+            isActive: product.isActive,
+            translations: [{
+              language: product.translations[0].language,
+              description: result.productName,
+            }]
+          }
+          handleUpdateProduct(data)
+        }
+      },
+    });
+  }
+
+  const openModalCreateProduct = async () => {
+    await dialogs.open(DialogAddProduct as any, undefined, {
+      onClose: async (result: IProductAddModel) => {
+        if (result) {
+          const data: IProduct = {
             id: uuidv4(),
+            isActive: true,
             price: result.price,
             translations: [{
               language: 'es',
@@ -49,55 +90,22 @@ export default function productsContainer({ role }: { role: EUserRole } ) {
         }
       },
     });
-    // const confirmed = await dialogs.confirm('¿Estás seguro de que deseas agregar este producto?', {
+  }
+
+      // const confirmed = await dialogs.confirm('¿Estás seguro de que deseas agregar este producto?', {
     //   title: 'Agregar Producto',
     //   okText: 'Agregar',
     //   cancelText: 'Cancelar',
     // });
-  }
-
-  const handleDeleteProduct = async (id: string) => {
-    await deleteProductService(id).then((res: any) => {
-      console.log(res)
-      getProducts()
-    })
-  }
-
-  const handleEditProduct = async (id: string) => {
-    const product = products.find((product: any) => product.id === id)
-    console.log(product)
-    const result = await dialogs.open(DialogEditProduct, product, {
-      onClose: async (result: any) => {
-        console.log(result)
-        const data = {
-          price: result.price,
-          translations: [{
-            language: 'es',
-            description: result.productName,
-          }]
-        }
-        if (result) {
-          updateProductService(id, data).then((res: any) => {
-            console.log(res)
-            getProducts()
-          })
-        }
-      },
-    });
-  }
 
   const changeStatusProduct = async (id: string) => {
-    if (products.find((product: any) => product.id === id)?.isActive) {
-      await deactivateProductService(id).then((res: any) => {
-        console.log(res)
-        getProducts()
-      })
+    const isActiveProduct = products.find((product: IProduct) => product.id === id)?.isActive
+    if (isActiveProduct) {
+      await deactivateProductService(id)
     } else {
-      await activateProductService(id).then((res: any) => {
-        console.log(res)
-        getProducts()
-      })
+      await activateProductService(id)
     }
+    getProducts()
   }
 
   return (
@@ -109,7 +117,7 @@ export default function productsContainer({ role }: { role: EUserRole } ) {
         </Button>
       </div>
       <div className='w-full'>
-        <TableProducts role={role} products={products} handleDeleteProduct={handleDeleteProduct} handleEditProduct={handleEditProduct} changeStatusProduct={changeStatusProduct} />
+        <TableProducts role={role} products={products} handleDeleteProduct={handleDeleteProduct} handleEditProduct={openModalEditProduct} changeStatusProduct={changeStatusProduct} />
       </div>
     </div>
   )

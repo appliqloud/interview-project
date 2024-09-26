@@ -7,7 +7,7 @@ export const loginService = async (username: string, password: string) => {
         data.append('password', password);
         const response = await axiosInstance.post('users/token', data, {
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',  // Header necesario
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
         });
         localStorage.setItem('token', response.data.accessToken);

@@ -1,3 +1,4 @@
+import { IProduct } from "@/app/interfaces/product"
 import axiosInstance from "@/utils/axios"
 
 export const productsService = async () => {
@@ -18,7 +19,7 @@ export const getProductByIdService = async (id: string) => {
     }
 }
 
-export const createProductService = async (data: any) => {
+export const createProductService = async (data: IProduct) => {
     try {
         const response = await axiosInstance.post('products/', data)
         return response.data

@@ -21,7 +21,9 @@ export default function RootLayout({
         <header className="w-full shadow-md">
           <Header />
         </header>
-        {children}
+        <main className="w-full">
+          {children}
+        </main>
       </body>
     </html>
   );

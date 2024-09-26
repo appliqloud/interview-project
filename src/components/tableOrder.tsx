@@ -1,4 +1,8 @@
+// React
 import * as React from 'react';
+import { useEffect, useState } from 'react';
+
+// MUI
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,41 +10,40 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useEffect, useState } from 'react';
 import { Checkbox, IconButton, Switch } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
-import { getProductByIdService } from '@/services/product.service';
-import { EUserRole } from '@/app/interfaces/user';
 
+// Services
+import { getProductByIdService } from '@/services/product.service';
+
+// Interfaces
+import { EUserRole } from '@/app/interfaces/user';
 interface ProductNameProps {
     productId: string;
 }
 
 export const ProductName: React.FC<ProductNameProps> = ({ productId }) => {
-    const [productName, setProductName] = useState<string>(''); // Estado para guardar el nombre del producto
+    const [productName, setProductName] = useState<string>('');
 
     useEffect(() => {
-        // Hacemos la pegada a la API cuando el productId cambia
         const fetchProductName = async () => {
             try {
                 const res = await getProductByIdService(productId);
-                setProductName(res.translations[0].description); // Guardamos el nombre en el estado
+                setProductName(res.translations[0].description);
             } catch (error) {
                 console.error('Error al obtener el producto:', error);
+                setProductName('Producto no disponible...');
             }
         };
 
-        fetchProductName(); // Llamada a la API
-    }, [productId]); // El efecto se ejecuta cada vez que productId cambia
+        fetchProductName();
+    }, [productId]);
 
     return <span>{productName || 'Cargando...'}</span>;
 };
 
 
 export default function tableOrder({ orders, handleCancelOrder, changeStatusOrder, role }: { orders: any, handleCancelOrder: any, changeStatusOrder: any, role: EUserRole }) {
-
 
     return (
         <TableContainer component={Paper}>

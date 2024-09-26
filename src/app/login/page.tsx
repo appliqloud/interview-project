@@ -1,26 +1,30 @@
+// Resources React and Next
 'use client'
 import React, { ChangeEvent, useState } from 'react'
 import Image from 'next/image'
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { getUserService, loginService } from '@/services/user.service';
 import { useRouter } from 'next/navigation'
 
+// Material UI
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+
+// Services
+import { getUserService, loginService } from '@/services/user.service';
+import { IUser } from '../interfaces/user';
+
 function login() {
-  const router = useRouter()
-  // Estado para los valores del formulario
+
   const [formValues, setFormValues] = useState({
     username: "",
     password: "",
   });
-
-  // Estado para los errores
   const [formErrors, setFormErrors] = useState({
     username: null,
     password: null,
   });
+  const router = useRouter()
 
-  // Función para manejar el cambio de valores en los campos
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value } = e.target;
@@ -30,7 +34,24 @@ function login() {
     });
   };
 
-  // Validaciones básicas
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (validate()) {
+      handleLogin()
+    }
+  };
+
+  const handleLogin = () => { 
+    loginService(formValues.username, formValues.password).then((res) => {
+      const fetchUser = async () => {
+        const user: IUser = await getUserService(res.accessToken);
+        localStorage.setItem('user', JSON.stringify(user));
+      };
+      fetchUser();
+      router.push('/')
+    })
+  }
+  
   const validate = () => {
     let errors: { username: string | null, password: string | null } = {
       username: null,
@@ -52,31 +73,10 @@ function login() {
 
     setFormErrors(errors as any);
 
-    // Retorna `true` si no hay errores
     return errors.username === null && errors.password === null;
   };
 
-  // Función para manejar el submit del formulario
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    if (validate()) {
-      console.log(formValues)
-      // Aquí puedes hacer la lógica de envío de datos al servidor
-      loginService(formValues.username, formValues.password).then((res) => {
-        const fetchUser = async () => {
-          const user = await getUserService(res.accessToken);
-          localStorage.setItem('user', JSON.stringify(user));
-        };
-        fetchUser();
-        router.push('/')
-      }).catch((err) => {
-        console.log(err)
-      })
-    }
-    else {
-      console.log(formErrors)
-    }
-  };
+
   return (
     <div className='w-full h-screen'>
       <div className='w-full h-full'>
@@ -117,7 +117,6 @@ function login() {
                 </div>
               </div>
             </form>
-
           </div>
         </div>
       </div>

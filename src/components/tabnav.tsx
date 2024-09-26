@@ -1,6 +1,8 @@
 'use client'
-import { Tab, Tabs } from '@mui/material'
 import React from 'react'
+
+// MUI
+import { Tab, Tabs } from '@mui/material'
 
 export default function tabnav({setNewState}: {setNewState: (newState: number) => void}) {
     const [value, setValue] = React.useState(0);
