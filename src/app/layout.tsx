@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="w-full">
-        <header className="w-full">
+        <header className="w-full shadow-md">
           <Header />
         </header>
         {children}
