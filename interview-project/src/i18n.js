@@ -35,7 +35,14 @@ i18n
                 textTableTotal: "Total",
                 btnReceive: "Recibida",
                 btnCancel: "Cancelar",
-                textWrong: "Algo salio mal.."
+                textWrong: "Algo salio mal..",
+                textEditProduct: "Editar Productos",
+                name: "Nombre",
+                description: "Descripción",
+                price:"Precio",
+                textCreateOrder: "Crear Órden",
+                productID: "Id Producto",
+                Quantity: "Cantidad",
             }
           },
         en: {
@@ -62,7 +69,14 @@ i18n
             textTableTotal: "Total",
             btnReceive: "Receive",
             btnCancel: "Cancel",
-            textWrong: "Something went wrong!!"
+            textWrong: "Something went wrong!!",
+            textEditProduct: "Edit Product",
+            name: "Name",
+            description: "Description",
+            price:"Price",
+            textCreateOrder: "Create Order",
+            productID: "Product Id",
+            Quantity: "Quantity",
         }
       },
       

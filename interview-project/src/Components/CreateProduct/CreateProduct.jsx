@@ -1,10 +1,12 @@
+/*Dependencies */
 import React, {useState} from "react";
 import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
-import { Navbar } from "../Navbar/Navbar";
 import { useTranslation } from 'react-i18next';
 
+/*Components */
+import { Navbar } from "../Navbar/Navbar";
 
 
 export const CreateProduct = () => {
@@ -14,6 +16,7 @@ export const CreateProduct = () => {
     const redirect = useNavigate();
     const { t } = useTranslation();
 
+    //Store to create new product
     const store = async(e) =>{
         e.preventDefault();
         let products = JSON.parse(sessionStorage.getItem("products"));

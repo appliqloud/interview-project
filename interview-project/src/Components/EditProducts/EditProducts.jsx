@@ -1,15 +1,16 @@
+/*Dependencies */
 import React, {useEffect, useState} from "react";
 import axios from "../../api/axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { config } from "../../utils/utils";
+import { useTranslation } from 'react-i18next';
 
-let config = {
-    headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`
-    }
-  }
+/*Components */
+import { Navbar } from "../Navbar/Navbar";
 
 
 export const EditProducts = () => {
+    const { t } = useTranslation();
     const[descriptionEn, setDescriptionEn]= useState('');
     const[descriptionEs, setDescriptionEs]= useState('');
     const[price, setPrice]= useState(0);
@@ -53,34 +54,39 @@ export const EditProducts = () => {
 
 
   return (
-    <div className="container-fluid">
-        <div className="row mt-3">
-            <div className="col-12 col-lg-8 offset-0 offset-lg-2">
-                <div className="card">
-                    <div className="card-header bg-dark text-white">Editar productos</div>
-                    <div className="card-body">
-                        <form onSubmit={update}>
-                            <label>Nombre: </label>
-                            <input type='text' id='nombre' maxLength='80' 
-                            className="form-control"
-                            required={true} value={descriptionEn} onChange={ (e) => setDescriptionEn(e.target.value)}>
-                            </input>
-                            <label>Descripción: </label>
-                            <input type='text' id='descripcion' maxLength='150' 
-                            className="form-control"
-                            required={true} value={descriptionEs} onChange={ (e) => setDescriptionEs(e.target.value)}>
-                            </input>
-                            <label>Precio: </label>
-                            <input type='number' id='precio' 
-                            className="form-control" step='0.1'
-                            required={true} value={price} onChange={ (e) => setPrice(e.target.value)}>
-                            </input>
-                            <button className="btn btn-success mt-3">Guardar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <>
+      <Navbar/>
+      <div className="container-fluid">
+          <div className="row mt-3">
+              <div className="col-12 col-lg-8 offset-0 offset-lg-2">
+                  <div className="card">
+                      <div className="card-header bg-dark text-white">{t("textEditProduct")}</div>
+                      <div className="card-body">
+                          <form onSubmit={update}>
+                              <label>{t("name")}: </label>
+                              <input type='text' id='nombre' maxLength='80' 
+                              className="form-control"
+                              required={true} value={descriptionEn} onChange={ (e) => setDescriptionEn(e.target.value)}>
+                              </input>
+                              <label>{t("description")}: </label>
+                              <input type='text' id='descripcion' maxLength='150' 
+                              className="form-control"
+                              required={true} value={descriptionEs} onChange={ (e) => setDescriptionEs(e.target.value)}>
+                              </input>
+                              <label>{t("price")}: </label>
+                              <input type='number' id='precio' 
+                              className="form-control" step='0.1'
+                              required={true} value={price} onChange={ (e) => setPrice(e.target.value)}>
+                              </input>
+                              <button className="btn btn-success mt-3">{t("btnSave")}</button>
+                              &nbsp;
+                              <button className="btn btn-secondary mt-3" onClick={() => redirect("/products")}>{t("btnBack")}</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </>
   )
 }

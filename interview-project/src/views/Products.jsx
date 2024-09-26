@@ -1,21 +1,16 @@
+/*Dependencies */
 import React, {useEffect, useState} from 'react'
 import axios from "../api/axios";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { Navbar } from '../Components/Navbar/Navbar';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 
+/*Components */
+import { Navbar } from '../Components/Navbar/Navbar';
+import { TableProducts } from '../Components/Table/TableProducts';
+import { config } from '../utils/utils';
 
-let config = {
-    headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`
-    }
-  }
-  
-
-export const Products = () => {
-    const redirect = useNavigate();
+export const Products = () => {    
     const [products, setProducts] = useState([]);
     const [blockActions, setBlockActions] = useState(false);
     const { t } = useTranslation();
@@ -94,7 +89,7 @@ export const Products = () => {
     <>
     <Navbar></Navbar>
     <div className="container-fluid">
-    <h1 className='text-center'>{t("titleProduct")}</h1>
+        <h1 className='text-center'>{t("titleProduct")}</h1>
         {!blockActions && 
             <div className="row mt-3">
                 <div className="col-md-4 offset-md-4">
@@ -107,38 +102,9 @@ export const Products = () => {
         
         <div className="row mt-3">
             <div className="col-12 col-lg-8 offset-0 offset-lg-2">
-                <div className="table-responsive">
-                    <table className="table table-bordered">
-                        <thead>
-                            <tr><th>#</th><th>{t("textTableProduct")}</th><th>{t("textTableDescription")}</th><th>{t("textTablePrice")}</th><th></th></tr>
-                        </thead>
-                        <tbody className="table-group-divider">
-                            { products.map( (product, i)=>(
-                                
-                                <tr key={product.id}>
-                                    <td>{(i+1)}</td>
-                                    <td>{product.id}</td>
-                                    <td>{product.translations[0].description}</td>
-                                    <td>$ { new Intl.NumberFormat('es-mx').format(product.price)}</td>
-                                    <td>
-                                        <button className="btn btn-success" disabled={blockActions} onClick={()=>redirect(`/edit/${product.id}`)}>{t("btnAdd")}</button>
-                                        &nbsp;
-                                        <button className="btn btn-danger" disabled={blockActions} onClick={()=>deleteProduct(product.id)}>{t("btnDelete")}</button>
-                                        &nbsp;
-                                        {!product.isActive ? 
-                                            <button className="btn btn-secondary ml-2" disabled={blockActions} onClick={()=>activateProduct(product.id)}>{t("btnActivate")}</button> :
-                                            <button className="btn btn-warning ml-2" disabled={blockActions} onClick={()=>desactivateProduct(product.id)}>{t("btnDeactive")}</button>
-                                        }
-                                        
-                                        
-                                    </td>
-                                </tr>
-                            ))
-
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                <TableProducts listProducts={products} blockActions={blockActions} 
+                    deleteProduct={deleteProduct} activateProduct={activateProduct} desactivateProduct={desactivateProduct}
+                />
             </div>
         </div>
     </div>

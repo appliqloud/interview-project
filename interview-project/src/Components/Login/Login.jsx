@@ -1,10 +1,16 @@
+/*Dependencies */
 import React, { useEffect, useState } from 'react'
-import axios from '../../api/axios'
-import './Login.css'
-import { FaUserAlt } from "react-icons/fa";
-import { RiLockPasswordFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import qs from 'qs';
+import axios from '../../api/axios'
+
+/*Styles */
+import './Login.css'
+
+/*Icons */
+import { FaUserAlt } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { AiOutlineLogin } from "react-icons/ai";
 
 
 export const Login = () => {
@@ -14,6 +20,8 @@ export const Login = () => {
   const [token, setToken] = useState("")
   const redirect = useNavigate();
 
+
+  //UseEffect to validate if the token are empty and redirect to products
   useEffect(()=>{
     if (token !== "") {
       sessionStorage.setItem("accessToken",token);
@@ -22,6 +30,7 @@ export const Login = () => {
     
   },[token])
 
+  //handleSubmit to send user and password
   const handleSubmit = async (e)=>{
     e.preventDefault();
     const data = { 'username': user, 'password': pwd };
@@ -32,12 +41,9 @@ export const Login = () => {
       url: '/users/token',
     };
 
-    let login = await axios(options)
+    await axios(options)
     .then( (response) => setToken(response.data.accessToken))
     .catch(error=>console.log(error));
-    console.log(login);
-  
-    /*  */
   }
 
   return (
@@ -59,7 +65,8 @@ export const Login = () => {
         </div>
 
         <div className="submit-container">          
-          <div className="submit" onClick={handleSubmit}>login</div>
+          <div className="submit" onClick={handleSubmit}>Iniciar Sesion  &nbsp;<AiOutlineLogin />
+          </div>
         </div>
     </div>
   )

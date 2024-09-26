@@ -1,33 +1,38 @@
+/*Dependencies */
 import React, {useEffect, useState} from 'react'
 import axios from "../api/axios";
 import { Link } from "react-router-dom";
-import { Navbar } from '../Components/Navbar/Navbar';
 import { useTranslation } from 'react-i18next';
 
-let config = {
-    headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`
-    }
-  }
+/*Components */
+import { Navbar } from '../Components/Navbar/Navbar';
+import { config } from '../utils/utils';
+import { TableOrders } from '../Components/Table/TableOrders';
+
+
+
 
 export const Orders = () => {
-    const [products, setProducts] = useState([]);
-    const [role, setRole] = useState("");
     const { t } = useTranslation();
-
+    const [orders, setOrders] = useState([]);
+    const [role, setRole] = useState("");
+    
+    //UseEffect to set role and get orders
     useEffect(() => {
         setRole(sessionStorage.getItem("role"))
         getOrders();
     },[]);
     
+    //getOrders to display all orders
     const getOrders = async() =>{        
         await axios.get( '/orders/',config)
         .then( ( response ) => {
-            setProducts( response.data )
+            setOrders( response.data )
         }).catch((error)=>console.log(error))
         
     }
 
+    //receiveOrder to set receive order
     const receiveOrder = async(id) =>{      
         const article = {};
         const headers = { 
@@ -67,35 +72,7 @@ export const Orders = () => {
         </div>
         <div className="row mt-3">
             <div className="col-12 col-lg-8 offset-0 offset-lg-2">
-                <div className="table-responsive">
-                    <table className="table table-bordered">
-                        <thead>
-                            <tr><th>#</th><th>{t("textTableId")}</th><th>{t("textTableStatus")}</th><th>{t("textTableQuantity")}</th><th>{t("textTableTotal")}</th><th></th></tr>
-                        </thead>
-                        <tbody className="table-group-divider">
-                            { products.map( (product, i)=>(
-                                
-                                <tr key={product.id}>
-                                    <td>{(i+1)}</td>
-                                    <td>{product.productId}</td>
-                                    <td>{product.status}</td>
-                                    <td>{product.quantity}</td>
-                                    <td>${new Intl.NumberFormat('es-mx').format(product.total)}</td>
-                                    {product.status !== "CANCELLED" &&
-                                        <td>
-                                            {role !== "USER" && <button className="btn btn-success" disabled={product.status === "RECEIVED"} onClick={()=>receiveOrder(product.id)}>{t("btnReceive")}</button>}
-                                            &nbsp;
-                                            <button className="btn btn-danger" disabled={product.status === "RECEIVED"} onClick={()=>cancelOrder(product.id)}>{t("btnCancel")}</button>
-                                        </td>
-                                    }
-                                    
-                                </tr>
-                            ))
-
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                <TableOrders listOrders={orders} role={role} receiveOrder={receiveOrder} cancelOrder={cancelOrder} />
             </div>
         </div>
     </div>
