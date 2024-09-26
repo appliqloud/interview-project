@@ -9,8 +9,9 @@ import DialogAddProduct from '../components/dialogAddProduct'
 import DialogEditProduct from '../components/dialogEditProduct'
 import { v4 as uuidv4 } from 'uuid';
 import { activateProductService, deactivateProductService } from '../services/product.service';
+import { EUserRole } from '@/app/interfaces/user';
 
-export default function productsContainer() {
+export default function productsContainer({ role }: { role: EUserRole } ) {
   const dialogs = useDialogs();
 
   const [products, setProducts] = useState<any>([])
@@ -103,12 +104,12 @@ export default function productsContainer() {
     <div className='w-full h-full flex flex-col gap-8'>
       <div className='flex justify-between'>
         <h3>Lista de Productos</h3>
-        <Button variant="contained" color="primary" onClick={openModalCreateProduct}>
+        <Button disabled={role !== EUserRole.ADMIN} variant="contained" color="primary" onClick={openModalCreateProduct}>
           Agregar Producto
         </Button>
       </div>
       <div className='w-full'>
-        <TableProducts products={products} handleDeleteProduct={handleDeleteProduct} handleEditProduct={handleEditProduct} changeStatusProduct={changeStatusProduct} />
+        <TableProducts role={role} products={products} handleDeleteProduct={handleDeleteProduct} handleEditProduct={handleEditProduct} changeStatusProduct={changeStatusProduct} />
       </div>
     </div>
   )

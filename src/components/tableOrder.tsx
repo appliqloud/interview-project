@@ -12,6 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
 import { getProductByIdService } from '@/services/product.service';
+import { EUserRole } from '@/app/interfaces/user';
 
 interface ProductNameProps {
     productId: string;
@@ -38,7 +39,7 @@ export const ProductName: React.FC<ProductNameProps> = ({ productId }) => {
 };
 
 
-export default function tableOrder({ orders, handleCancelOrder, changeStatusOrder }: { orders: any, handleCancelOrder: any, changeStatusOrder: any }) {
+export default function tableOrder({ orders, handleCancelOrder, changeStatusOrder, role }: { orders: any, handleCancelOrder: any, changeStatusOrder: any, role: EUserRole }) {
 
 
     return (
@@ -72,7 +73,10 @@ export default function tableOrder({ orders, handleCancelOrder, changeStatusOrde
                                 ${row.total}
                             </TableCell>
                             <TableCell align="right">
-                                <Checkbox disabled={row.status !== 'PENDING'} checked={row.status !== 'PENDING'} onChange={() => changeStatusOrder(row.id)} />
+                                {role === EUserRole.ADMIN && (
+
+                                    <Checkbox disabled={row.status !== 'PENDING'} checked={row.status !== 'PENDING'} onChange={() => changeStatusOrder(row.id)} />
+                                )}
                             </TableCell>
                             <TableCell align="right">
                                 <IconButton aria-label="delete" onClick={() => handleCancelOrder(row.id)}>

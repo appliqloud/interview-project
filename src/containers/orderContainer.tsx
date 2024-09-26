@@ -5,9 +5,9 @@ import DialogAddOrder from '@/components/dialogAddOrder';
 import { cancelOrderService, changeStatusOrderService, createOrderService, getOrdersService } from '@/services/order.service';
 import { v4 as uuidv4 } from 'uuid';
 import TableOrder from '@/components/tableOrder';
+import { EUserRole } from '@/app/interfaces/user';
 
-
-function orderContainer() {
+function orderContainer({ role }: { role: EUserRole }) {
     const dialogs = useDialogs();
     const [orders, setOrders] = useState([]);
 
@@ -45,12 +45,13 @@ function orderContainer() {
         <div className='w-full h-full flex flex-col gap-8'>
             <div className='flex justify-between'>
                 <h3>Lista de Ordenes</h3>
-                <Button variant="contained" color="primary" onClick={openModalCreateOrder}>
+                <Button disabled={role !== EUserRole.USER} variant="contained" color="primary" onClick={openModalCreateOrder}>
                     Agregar Orden
                 </Button>
+
             </div>
             <div className='w-full'>
-                <TableOrder orders={orders} handleCancelOrder={handleCancelOrder} changeStatusOrder={changeStatusOrder} />
+                <TableOrder role={role} orders={orders} handleCancelOrder={handleCancelOrder} changeStatusOrder={changeStatusOrder} />
             </div>
         </div>
     )

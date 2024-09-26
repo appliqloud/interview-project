@@ -8,6 +8,7 @@ import OrderContainer from "@/containers/orderContainer";
 
 export default function Home() {
   const [indexTab, setIndexTab] = useState(0);
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   return (
     <>
       <DialogsProvider>
@@ -19,9 +20,9 @@ export default function Home() {
                 <TabNav setNewState={setIndexTab} />
                 <div className="p-4 w-full">
                   {indexTab === 0 ?
-                    <OrderContainer />
+                    <OrderContainer role={user.role} />
                     :
-                    <ProductsContainer />
+                    <ProductsContainer role={user.role} />
                   }
                 </div>
               </div>

@@ -10,8 +10,9 @@ import { useEffect } from 'react';
 import { IconButton, Switch } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { EUserRole } from '@/app/interfaces/user';
 
-export default function tableProducts({ products, handleDeleteProduct, handleEditProduct, changeStatusProduct }: { products: any, handleDeleteProduct: any, handleEditProduct: any, changeStatusProduct: any }) {
+export default function tableProducts({ products, handleDeleteProduct, handleEditProduct, changeStatusProduct, role }: { products: any, handleDeleteProduct: any, handleEditProduct: any, changeStatusProduct: any, role: EUserRole }) {
 
   return (
     <TableContainer component={Paper}>
@@ -37,18 +38,19 @@ export default function tableProducts({ products, handleDeleteProduct, handleEdi
               <TableCell align="right">{row.price}</TableCell>
               <TableCell align="right">
                 <Switch
+                  disabled={role !== EUserRole.ADMIN}
                   checked={row.isActive}
                   onChange={() => changeStatusProduct(row.id)}
                   inputProps={{ 'aria-label': 'controlled' }}
                 />
               </TableCell>
               <TableCell align="right">
-                <IconButton aria-label="edit" onClick={() => handleEditProduct(row.id)}>
+                <IconButton disabled={role !== EUserRole.ADMIN} aria-label="edit" onClick={() => handleEditProduct(row.id)}>
                   <EditIcon />
                 </IconButton>
               </TableCell>
               <TableCell align="right">
-                <IconButton aria-label="delete" onClick={() => handleDeleteProduct(row.id)}>
+                <IconButton disabled={role !== EUserRole.ADMIN} aria-label="delete" onClick={() => handleDeleteProduct(row.id)}>
                   <DeleteIcon />
                 </IconButton>
               </TableCell>
