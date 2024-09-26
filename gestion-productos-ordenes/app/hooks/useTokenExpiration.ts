@@ -11,7 +11,7 @@ const useTokenExpiration = (token: string | null) => {
       // Configuramos un temporizador para redirigir al login cuando expire el token
       const timer = setTimeout(() => {
         console.log("Token ha expirado, redirigiendo al login...");
-        router.push("/login"); // Redirige al login
+        router.push("/"); // Redirige al login
       }, TOKEN_EXPIRATION_TIME);
 
       // Limpia el temporizador si el componente se desmonta o el token cambia

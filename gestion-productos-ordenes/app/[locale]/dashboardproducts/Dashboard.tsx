@@ -33,7 +33,7 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className="flex  justify-center items-center flex-col gap-10 mx-auto">
+    <div className="flex  flex-col gap-10 mx-auto border border-solid h-[100vh] w-full p-20">
       <div className="flex gap-2 justify-end items-end w-full">
         {role === "ADMIN" && (
           <button

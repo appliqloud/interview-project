@@ -1,9 +1,9 @@
-"use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/app/lib/authStore";
 import { useApi } from "@/app/hooks/useApiRequest";
+import { motion } from "framer-motion";
 
 const LoginComponent = () => {
   const [username, setUsername] = useState("");
@@ -11,8 +11,8 @@ const LoginComponent = () => {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const setToken = useAuthStore((state) => state.setToken);
-  const login = useAuthStore((state) => state.login);
+  const setToken = useAuthStore((state: { setToken: any }) => state.setToken);
+  const login = useAuthStore((state: { login: any }) => state.login);
 
   //** CUSTOM HOOKS
   const { request } = useApi();
@@ -62,38 +62,74 @@ const LoginComponent = () => {
     }
   };
   return (
-    <div className="flex flex-col h-[100vh] justify-center items-center ">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col shadow w-[80%] mx-auto p-4 rounded-lg gap-1 max-w-[500px] justify-center items-center"
-      >
-        <div className="flex flex-col gap w-full">
-          <label>Usuario</label>
+    <>
+      <form onSubmit={handleSubmit} className="w-full">
+        <motion.div
+          variants={primaryVariants}
+          className="mb-1 inline-block text-sm font-medium"
+        >
+          <label
+            htmlFor="user-input"
+            className="mb-1 inline-block text-sm font-medium"
+          >
+            Usuario
+            <span className="text-red-600">*</span>
+          </label>
           <input
+            id="user-input"
             type="text"
             placeholder="Usuario"
             value={username}
+            className="w-full rounded border-[1px] border-slate-300 px-2.5 py-1.5 focus:outline-indigo-600"
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </div>
-        <div className="flex flex-col gap w-full">
-          <label>Contraseña</label>
+        </motion.div>
+        <motion.div
+          variants={primaryVariants}
+          className="flex flex-col gap w-full"
+        >
+          <label
+            htmlFor="password-input"
+            className="mb-1 inline-block text-sm font-medium"
+          >
+            Password<span className="text-red-600">*</span>
+          </label>
           <input
+            id="password-input"
             type="password"
             placeholder="Contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="w-full rounded border-[1px] border-slate-300 px-2.5 py-1.5 focus:outline-indigo-600"
             required
           />
-        </div>
-        <button type="submit" className="px-6 py-2 border w-auto mt-3 ">
+        </motion.div>
+        <motion.button
+          variants={primaryVariants}
+          type="submit"
+          className="mb-1.5 w-full rounded bg-indigo-600 px-4 py-2 text-center font-medium text-white transition-colors hover:bg-indigo-700 mt-4"
+          whileTap={{
+            scale: 0.985,
+          }}
+        >
           Iniciar sesión
-        </button>
+        </motion.button>
       </form>
       {error && <p>{error}</p>}
-    </div>
+    </>
   );
 };
 
 export default LoginComponent;
+
+const primaryVariants = {
+  initial: {
+    y: 25,
+    opacity: 0,
+  },
+  animate: {
+    y: 0,
+    opacity: 1,
+  },
+};

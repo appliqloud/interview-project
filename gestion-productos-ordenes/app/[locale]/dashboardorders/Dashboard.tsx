@@ -34,7 +34,7 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className="flex  justify-center items-center flex-col gap-10 mx-auto">
+    <div className="flex  flex-col gap-10 mx-auto border border-solid h-[100vh] w-full p-20">
       {/* {tab === 2 && <h1>Cantidad de productos: {productsCount} </h1>}
       {tab === 1 && <h1>Cantidad de ordenes: {productsCount} </h1>} */}
       <div className="flex gap-2 justify-end items-end w-full">
