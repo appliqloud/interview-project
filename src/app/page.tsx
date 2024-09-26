@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react";
-import TabNav from "./components/tabnav";
-import ProductsContainer from "./containers/productsContainer";
+import TabNav from "../components/tabnav";
+import ProductsContainer from "../containers/productsContainer";
 export default function Home() {
   const [indexTab, setIndexTab] = useState(0);
   return (
