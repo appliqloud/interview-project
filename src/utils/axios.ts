@@ -25,9 +25,14 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Manejo global de errores
-    if (error.response && error.response.status === 401) {
-      // Por ejemplo, redirigir al usuario al login si está no autenticado
+    if (error.response.status === 401) {
+      // Si recibimos un 401, significa que el token ha expirado o no es válido
+      localStorage.removeItem('token');  // Borrar el token del localStorage
+      
+      // Redirigir al usuario al login
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login';  // Redirigir al login en el lado del cliente
+      }
     }
     return Promise.reject(error);
   }
