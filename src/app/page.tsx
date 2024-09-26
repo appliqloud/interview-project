@@ -2,6 +2,9 @@
 import { useState } from "react";
 import TabNav from "../components/tabnav";
 import ProductsContainer from "../containers/productsContainer";
+import { DialogsProvider } from '@toolpad/core/useDialogs';
+
+
 export default function Home() {
   const [indexTab, setIndexTab] = useState(0);
   return (
@@ -18,7 +21,9 @@ export default function Home() {
                 </div>
               </div> : 
               <div className="p-4 w-full">
-                <ProductsContainer />
+                <DialogsProvider>
+                  <ProductsContainer />
+                </DialogsProvider>
               </div>
               }
             </div>
