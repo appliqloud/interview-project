@@ -5,17 +5,25 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
 import { MenuItem } from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
+import LanguageIcon from '@mui/icons-material/Language';
 
-export default function header() {
+export default function Header() {
 
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
-  const handleClick = () => {
-    setIsOpenMenu(!isOpenMenu);
-  }
 
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
   const handleClose = () => {
-    setIsOpenMenu(false);
+    setAnchorEl(null);
+  }
+  const logOut = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/login';
   }
 
   return (
@@ -25,27 +33,34 @@ export default function header() {
           <Image className="color-transparent" src="/logo_aq_black.webp" alt="logo" width={100} height={50} />
           <h1 className="text-2xl font-bold">Interview App</h1>
           <IconButton
-            aria-label="more"
-            id="long-button"
-            aria-controls={isOpenMenu ? 'long-menu' : undefined}
-            aria-expanded={isOpenMenu ? 'true' : undefined}
+            id="basic-button"
+            aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
           >
             <MenuIcon />
           </IconButton>
           <Menu
-            id="long-menu"
-            MenuListProps={{
-              'aria-labelledby': 'long-button',
-            }}
-            open={isOpenMenu}
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
             onClose={handleClose}
-            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
           >
             <MenuItem onClick={handleClose}>
-               Profile
+              <div className="flex items-center gap-2">
+                <LanguageIcon />
+                <p>Cambiar Idioma</p>
+              </div>
+            </MenuItem>
+            <MenuItem onClick={logOut}>
+              <div className="flex items-center gap-2">
+                <LogoutIcon />
+                <p>Cerrar Sesión</p>
+              </div>
             </MenuItem>
           </Menu>
         </div>

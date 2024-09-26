@@ -3,7 +3,7 @@ import React, { ChangeEvent, useState } from 'react'
 import Image from 'next/image'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { loginService } from '@/services/user.service';
+import { getUserService, loginService } from '@/services/user.service';
 import { useRouter } from 'next/navigation'
 
 function login() {
@@ -63,6 +63,11 @@ function login() {
       console.log(formValues)
       // Aquí puedes hacer la lógica de envío de datos al servidor
       loginService(formValues.username, formValues.password).then((res) => {
+        const fetchUser = async () => {
+          const user = await getUserService(res.accessToken);
+          localStorage.setItem('user', JSON.stringify(user));
+        };
+        fetchUser();
         router.push('/')
       }).catch((err) => {
         console.log(err)

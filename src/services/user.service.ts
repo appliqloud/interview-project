@@ -16,3 +16,16 @@ export const loginService = async (username: string, password: string) => {
         throw error;
     }
 };
+
+export const getUserService = async (token: string) => {
+    try {
+        const response = await axiosInstance.get('users/me', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
