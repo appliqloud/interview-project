@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 // Material UI
 import { Button } from '@mui/material'
 import { useDialogs } from '@toolpad/core/useDialogs';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // Interfaces
 import { EUserRole } from '@/app/interfaces/user';
@@ -23,6 +24,7 @@ import { IProduct } from '@/app/interfaces/product'
 export default function productsContainer({ role }: { role: EUserRole }) {
 
   const [products, setProducts] = useState<any>([])
+  const [loading, setLoading] = useState<boolean>(true)
   const dialogs = useDialogs();
 
 
@@ -32,7 +34,8 @@ export default function productsContainer({ role }: { role: EUserRole }) {
 
   const getProducts = async () => {
     const response = await productsService()
-    setProducts(response)
+    setProducts(response) 
+    setLoading(false)
   }
 
   const handleCreateProduct = async (data: IProduct) => {
@@ -117,7 +120,9 @@ export default function productsContainer({ role }: { role: EUserRole }) {
         </Button>
       </div>
       <div className='w-full'>
-        <TableProducts role={role} products={products} handleDeleteProduct={handleDeleteProduct} handleEditProduct={openModalEditProduct} changeStatusProduct={changeStatusProduct} />
+        {loading ? <div className='w-full h-full flex items-center justify-center'><CircularProgress /></div> : (
+          <TableProducts role={role} products={products} handleDeleteProduct={handleDeleteProduct} handleEditProduct={openModalEditProduct} changeStatusProduct={changeStatusProduct} />
+        )}
       </div>
     </div>
   )

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useDialogs } from '@toolpad/core/useDialogs';
 
 // Material UI
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 
 // Components
 import DialogAddOrder from '@/components/dialogAddOrder';
@@ -20,6 +20,7 @@ import { EUserRole } from '@/app/interfaces/user';
 function orderContainer({ role }: { role: EUserRole }) {
 
     const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState<boolean>(true)
     const dialogs = useDialogs();
 
 
@@ -30,6 +31,7 @@ function orderContainer({ role }: { role: EUserRole }) {
     const getOrders = async () => {
         const response = await getOrdersService()
         setOrders(response)
+        setLoading(false)
     }
 
     const openModalCreateOrder = async () => {
@@ -63,7 +65,11 @@ function orderContainer({ role }: { role: EUserRole }) {
 
             </div>
             <div className='w-full'>
-                <TableOrder role={role} orders={orders} handleCancelOrder={handleCancelOrder} changeStatusOrder={changeStatusOrder} />
+                {orders.length === 0 && !loading ? <div className='w-full h-full flex items-center justify-center'><h3>No hay ordenes</h3></div> : (
+                    loading ? <div className='w-full h-full flex items-center justify-center'><CircularProgress /></div> : (
+                        <TableOrder role={role} orders={orders} handleCancelOrder={handleCancelOrder} changeStatusOrder={changeStatusOrder} />
+                    )
+                )}
             </div>
         </div>
     )

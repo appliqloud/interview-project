@@ -1,12 +1,13 @@
 // Resources React and Next
 'use client'
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 // Material UI
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { CircularProgress } from '@mui/material';
 
 // Services
 import { getUserService, loginService } from '@/services/user.service';
@@ -22,7 +23,14 @@ function login() {
     username: null,
     password: null,
   });
+  const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
+
+  useEffect(() => {
+    return () => {
+      setLoading(false)
+    }
+  }, [])
 
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>
@@ -37,6 +45,7 @@ function login() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (validate()) {
+      setLoading(true)
       handleLogin()
     }
   };
@@ -113,7 +122,9 @@ function login() {
                   />
                 </div>
                 <div className='flex items-center justify-center w-full'>
-                  <Button variant="contained" type='submit'>Iniciar Sesión</Button>
+                  {loading ? <CircularProgress /> : (
+                    <Button variant="contained" type='submit'>Iniciar Sesión</Button>
+                  )}
                 </div>
               </div>
             </form>

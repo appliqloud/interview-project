@@ -63,7 +63,7 @@ export default function tableOrder({ orders, handleCancelOrder, changeStatusOrde
                         if (a.status === 'PENDING' && b.status !== 'PENDING') return -1;
                         if (a.status !== 'PENDING' && b.status === 'PENDING') return 1;
                         return 0; // Si ambos tienen el mismo estado, no los reordenamos
-                    }).filter((row: any) => row.status !== 'CANCELLED').map((row: any) => (
+                    }).map((row: any) => (
                         <TableRow
                             key={row.id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -82,9 +82,11 @@ export default function tableOrder({ orders, handleCancelOrder, changeStatusOrde
                                 )}
                             </TableCell>
                             <TableCell align="right">
-                                <IconButton aria-label="delete" onClick={() => handleCancelOrder(row.id)}>
-                                    <ClearIcon />
-                                </IconButton>
+                                {row.status === 'CANCELLED' ? <span>Cancelada</span> : (
+                                    <IconButton aria-label="delete" onClick={() => handleCancelOrder(row.id)}>
+                                        <ClearIcon />
+                                    </IconButton>
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}
