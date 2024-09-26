@@ -1,6 +1,7 @@
 'use client'
 import { useState } from "react";
 import TabNav from "./components/tabnav";
+import ProductsContainer from "./containers/productsContainer";
 export default function Home() {
   const [indexTab, setIndexTab] = useState(0);
   return (
@@ -16,11 +17,10 @@ export default function Home() {
                   <h1>Ordenes</h1>
                 </div>
               </div> : 
-              <div>
-                <div>
-                  <h1>Productos</h1>
-                </div>
-              </div>}
+              <div className="p-4 w-full">
+                <ProductsContainer />
+              </div>
+              }
             </div>
           </div>
         </div>
