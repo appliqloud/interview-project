@@ -9,6 +9,15 @@ export const productsService = async () => {
     }
 }
 
+export const getProductByIdService = async (id: string) => {
+    try {
+        const response = await axiosInstance.get(`products/${id}`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
 export const createProductService = async (data: any) => {
     try {
         const response = await axiosInstance.post('products/', data)
