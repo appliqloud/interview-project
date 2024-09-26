@@ -120,8 +120,10 @@ export default function productsContainer({ role }: { role: EUserRole }) {
         </Button>
       </div>
       <div className='w-full'>
-        {loading ? <div className='w-full h-full flex items-center justify-center'><CircularProgress /></div> : (
-          <TableProducts role={role} products={products} handleDeleteProduct={handleDeleteProduct} handleEditProduct={openModalEditProduct} changeStatusProduct={changeStatusProduct} />
+        {products.length === 0 && !loading ? <div className='w-full h-full flex items-center justify-center'><h3>No hay productos</h3></div> : (
+          loading ? <div className='w-full h-full flex items-center justify-center'><CircularProgress /></div> : (
+            <TableProducts role={role} products={products} handleDeleteProduct={handleDeleteProduct} handleEditProduct={openModalEditProduct} changeStatusProduct={changeStatusProduct} />
+          )
         )}
       </div>
     </div>
