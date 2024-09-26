@@ -1,6 +1,6 @@
 // Resources React
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Components and Containers
 import TabNav from "../components/tabnav";
@@ -9,12 +9,18 @@ import OrderContainer from "@/containers/orderContainer";
 
 // Material UI
 import { DialogsProvider } from '@toolpad/core/useDialogs';
+import { EUserRole, IUser } from "./interfaces/user";
 
 
 export default function Home() {
 
   const [indexTab, setIndexTab] = useState(0);
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const [user, setUser] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    setUser(user);
+  }, []);
 
   return (
     <>
@@ -26,9 +32,9 @@ export default function Home() {
                 <TabNav setNewState={setIndexTab} />
                 <div className="p-4 w-full">
                   {indexTab === 0 ?
-                    <OrderContainer role={user?.role} />
+                    <OrderContainer role={user?.role as EUserRole} />
                     :
-                    <ProductsContainer role={user?.role} />
+                    <ProductsContainer role={user?.role as EUserRole} />
                   }
                 </div>
               </div>
