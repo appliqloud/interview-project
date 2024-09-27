@@ -3,8 +3,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useProductStore } from "@/app/lib/userProductStore";
+import { useTranslation } from "react-i18next";
 const roleMaster = "ADMIN";
 const TableOrders = ({ products, refreshProducts }: any) => {
+  const { t } = useTranslation();
   const { role } = useAuthStore();
   const { orders, getOrders, receiveOrder, cancelOrder } = useProductStore();
 
@@ -18,12 +20,14 @@ const TableOrders = ({ products, refreshProducts }: any) => {
         <thead>
           <tr className="bg-gray-200">
             <th className="px-4 py-2">Id</th>
-            <th className="px-4 py-2">status</th>
-            <th className="px-4 py-2">productId</th>
-            <th className="px-4 py-2">quantity</th>
+            <th className="px-4 py-2">{t("headerStatus")}</th>
+            <th className="px-4 py-2">{t("headerProduct")}</th>
+            <th className="px-4 py-2">{t("headerQuantity")}</th>
             <th className="px-4 py-2">total</th>
-            <th className="px-4 py-2">cancel</th>
-            {role === roleMaster && <th className="px-4 py-2">receive</th>}
+            <th className="px-4 py-2">{t("headerCancel")}</th>
+            {role === roleMaster && (
+              <th className="px-4 py-2"> {t("headerReceive")}</th>
+            )}
             {/* <th className="px-4 py-2">Deactivate</th> */}
           </tr>
         </thead>
@@ -38,7 +42,7 @@ const TableOrders = ({ products, refreshProducts }: any) => {
               <td className="border px-4 py-2">{order.total}</td>
               <td className="border px-4 py-2">
                 <button
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded lowercase"
                   onClick={() => {
                     cancelOrder(order.id);
                     setTimeout(() => {
@@ -46,13 +50,13 @@ const TableOrders = ({ products, refreshProducts }: any) => {
                     }, 1000);
                   }}
                 >
-                  cancel
+                  {t("headerCancel")}
                 </button>
               </td>
               {role === roleMaster && (
                 <td className="border px-4 py-2">
                   <button
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded lowercase"
                     onClick={() => {
                       receiveOrder(order.id);
                       setTimeout(() => {
@@ -60,7 +64,7 @@ const TableOrders = ({ products, refreshProducts }: any) => {
                       }, 1000);
                     }}
                   >
-                    receive
+                    {t("headerReceive")}
                   </button>
                 </td>
               )}

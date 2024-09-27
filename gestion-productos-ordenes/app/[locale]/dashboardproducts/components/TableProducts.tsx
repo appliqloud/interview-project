@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import { useProductStore } from "@/app/lib/userProductStore";
 import classNames from "classnames";
 import EditProductForm from "./EditProductForm";
+import { useTranslation } from "react-i18next";
 
 const roleMaster = "ADMIN";
 
 const TableProducts = ({ products, refreshProducts }: any) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [openModal, setOpenModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -53,11 +55,11 @@ const TableProducts = ({ products, refreshProducts }: any) => {
         <thead>
           <tr className="bg-gray-200">
             <th className="px-4 py-2">Id</th>
-            <th className="px-4 py-2">Precio</th>
-            <th className="px-4 py-2">Translations</th>
-            <th className="px-4 py-2">Actions</th>
-            <th className="px-4 py-2">Activate</th>
-            <th className="px-4 py-2">Deactivate</th>
+            <th className="px-4 py-2">{t("headerPrice")}</th>
+            <th className="px-4 py-2">{t("headerTranslations")}</th>
+            <th className="px-4 py-2">{t("headerActions")}</th>
+            <th className="px-4 py-2">{t("headerActivate")}</th>
+            <th className="px-4 py-2">{t("headerDeactive")}</th>
           </tr>
         </thead>
         <tbody>

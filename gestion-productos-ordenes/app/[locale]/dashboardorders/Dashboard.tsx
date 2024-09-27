@@ -9,13 +9,14 @@ import useTokenExpiration from "@/app/hooks/useTokenExpiration";
 import CreateOrderForm from "./components/CreateOrderForm";
 import TableOrders from "./components/TableOrders";
 import LanguageChanger from "../components/LanguageChanger";
+import { useTranslation } from "react-i18next";
 // import { useAuthStore } from "../store/authStore"; // Importamos el store
 
 const AdminDashboard = () => {
   const [openModal, setOpenModal] = useState(false);
+  const { t } = useTranslation();
   const [openOrderModal, setOpenOrderModal] = useState(false);
 
-  // const [products, setProducts] = useState<any[]>([]);
   const { getProducts, products, productsCount, getProductsCount } =
     useProductStore();
   const { token } = useAuthStore();
@@ -45,7 +46,7 @@ const AdminDashboard = () => {
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => setOpenOrderModal(!openOrderModal)}
           >
-            add order
+            {t("btnOrder")}
           </button>
         )}
       </div>

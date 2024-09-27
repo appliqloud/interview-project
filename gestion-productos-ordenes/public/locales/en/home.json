@@ -1,1 +1,1 @@
-{"header":"Hello World","subheader":"Have a great day, {{userName}}!"}
+{"btnOrder":"add order","btnProduct":"add product","headerActions":"Actions","headerActivate":"Activate","headerCancel":"Cancel","headerDeactive":"Deactivate","headerlogin":"Log In","headerPrice":"Price","headerProduct":"Product Id","headerQuantity":"Quantity","headerReceive":"Receive","headerStatus":"Status","headerTranslations":"Translations","passwordForm":"password","subheader":"Have a great day, {{userName}}!","userForm":"user"}

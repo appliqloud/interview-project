@@ -9,10 +9,12 @@ import TableProducts from "./components/TableProducts";
 import { useProductStore } from "@/app/lib/userProductStore";
 import useTokenExpiration from "@/app/hooks/useTokenExpiration";
 import LanguageChanger from "../components/LanguageChanger";
+import { useTranslation } from "react-i18next";
 
 // import { useAuthStore } from "../store/authStore"; // Importamos el store
 
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   const [openModal, setOpenModal] = useState(false);
   const [openOrderModal, setOpenOrderModal] = useState(false);
   const { getProducts, products, productsCount, getProductsCount } =
@@ -45,7 +47,7 @@ const AdminDashboard = () => {
             onClick={() => setOpenModal(!openModal)}
             disabled={role !== "ADMIN"}
           >
-            add product
+            {t("btnProduct")}
           </button>
         )}
       </div>
