@@ -13,6 +13,7 @@ import { useAuthStore } from "@/app/lib/authStore";
 import { TitleSection } from "./components/TitleSection";
 import { Option } from "./components/Option";
 import ToggleWrapper from "./ToggleLanguage";
+import LanguageChanger from "../components/LanguageChanger";
 
 export const SidebarWrapper = () => {
   const [isClient, setIsClient] = useState(false);
@@ -39,7 +40,7 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("dashboardproducts");
   const { token, logout } = useAuthStore();
   const pathname = usePathname();
-
+  const router = useRouter();
   useTokenExpiration(token);
 
   // Aseguramos que las animaciones solo se habiliten en el cliente
@@ -49,6 +50,18 @@ const Sidebar = () => {
     setIsClient(true); // Esto asegura que las animaciones se habiliten después de la carga del cliente
     setSelected(pathname.replace("/", ""));
   }, []);
+
+  useEffect(() => {
+    if (pathname.includes("en")) {
+      // Si la ruta es /en, redirigir a /dashboardproducts
+      // console.log("pathname", pathname, pathname.replace("/en/", ""));
+      if (pathname.replace("/en/", "") === "dashboardorders") {
+        setSelected("dashboardorders");
+      } else {
+        setSelected("dashboardproducts");
+      }
+    }
+  }, [pathname]);
 
   return (
     <motion.nav
@@ -81,10 +94,6 @@ const Sidebar = () => {
           isClient={isClient} // Pasar esto a los subcomponentes
           titleBtn="Orders"
         />
-
-        <div className="w-full mx-auto flex items-center justify-center">
-          <ToggleWrapper />
-        </div>
 
         {/* Boton para logout */}
         <motion.button

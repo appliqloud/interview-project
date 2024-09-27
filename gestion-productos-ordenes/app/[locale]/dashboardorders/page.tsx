@@ -1,18 +1,27 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import AdminDashboard from "./Dashboard";
+import React from "react";
+import TranslationsProvider from "@/app/components/TranslationsProvider";
+import initTranslations from "@/app/i18n";
+import WrapperDashboardProducts from "./WrapperDashboardProducts";
 // import { Sidebar } from "../Layout/SideBarWrapper";
+interface HomeProps {
+  params: {
+    locale: string;
+  };
+}
 
-const page = () => {
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+const i18nNamespaces = ["home", "common"];
+const page = async ({ params: { locale } }: HomeProps) => {
+  const { t, resources } = await initTranslations(locale, i18nNamespaces);
 
-  if (!isClient) {
-    return null; // Evitar renderizar el Sidebar en el servidor
-  }
-  return <AdminDashboard />;
+  return (
+    <TranslationsProvider
+      locale={locale}
+      resources={resources}
+      namespaces={i18nNamespaces}
+    >
+      <WrapperDashboardProducts />
+    </TranslationsProvider>
+  );
 };
 
 export default page;

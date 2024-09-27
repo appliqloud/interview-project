@@ -4,8 +4,10 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/app/lib/authStore";
 import { useApi } from "@/app/hooks/useApiRequest";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const LoginComponent = () => {
+  const { t } = useTranslation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -72,7 +74,7 @@ const LoginComponent = () => {
             htmlFor="user-input"
             className="mb-1 inline-block text-sm font-medium"
           >
-            Usuario
+            {t("userForm")}
             <span className="text-red-600">*</span>
           </label>
           <input
@@ -93,7 +95,8 @@ const LoginComponent = () => {
             htmlFor="password-input"
             className="mb-1 inline-block text-sm font-medium"
           >
-            Password<span className="text-red-600">*</span>
+            {t("passwordForm")}
+            <span className="text-red-600">*</span>
           </label>
           <input
             id="password-input"
@@ -108,12 +111,12 @@ const LoginComponent = () => {
         <motion.button
           variants={primaryVariants}
           type="submit"
-          className="mb-1.5 w-full rounded bg-indigo-600 px-4 py-2 text-center font-medium text-white transition-colors hover:bg-indigo-700 mt-4"
+          className="mb-1.5 w-full rounded bg-indigo-600 px-4 py-2 text-center font-medium text-white transition-colors hover:bg-indigo-700 mt-4 lowercase"
           whileTap={{
             scale: 0.985,
           }}
         >
-          Iniciar sesión
+          {t("headerlogin")}
         </motion.button>
       </form>
       {error && <p>{error}</p>}

@@ -8,6 +8,7 @@ import CreateProductForm from "./components/CreateProductForm";
 import TableProducts from "./components/TableProducts";
 import { useProductStore } from "@/app/lib/userProductStore";
 import useTokenExpiration from "@/app/hooks/useTokenExpiration";
+import LanguageChanger from "../components/LanguageChanger";
 
 // import { useAuthStore } from "../store/authStore"; // Importamos el store
 
@@ -33,7 +34,10 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className="flex  flex-col gap-10 mx-auto border border-solid h-[100vh] w-full p-20">
+    <div className="flex  flex-col gap-10 mx-auto  p-2">
+      <div className="w-full mx-auto flex items-end justify-end h-20 ">
+        <LanguageChanger />
+      </div>
       <div className="flex gap-2 justify-end items-end w-full">
         {role === "ADMIN" && (
           <button

@@ -1,1 +1,1 @@
-{"header":"Hello World","subheader":"Have a great day, {{userName}}!"}
+{"headerlogin":"Log In","passwordForm":"password","subheader":"Have a great day, {{userName}}!","userForm":"user"}
